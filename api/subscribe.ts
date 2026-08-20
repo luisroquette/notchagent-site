@@ -75,7 +75,12 @@ export default async function handler(req: Request): Promise<Response> {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: email.toLowerCase().trim(), produto: 'notchagent', segredo }),
-        signal: AbortSignal.timeout(5000),
+        // 20s, nao 5s: a rota do outro lado tem orcamento proprio de ate ~18s
+        // (POST do card com 8s + RPC + PUT do titulo com 8s) e ja devolve 502
+        // sozinha quando estoura. Com 5s o cliente desistia ANTES do servidor
+        // terminar — o lead era criado mas registrado aqui como `lead:false`,
+        // e no pior caso o card ficava orfao num board que nenhum cron varre.
+        signal: AbortSignal.timeout(20000),
       })
       const corpo = await leadRes.json().catch(() => null)
       const decisao = decidirLead(leadRes.status, corpo)
