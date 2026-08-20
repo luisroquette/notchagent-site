@@ -12,11 +12,23 @@ const PERMITIDOS = [
   'https://schema.org',
 ]
 
+// Aceita tambem o dominio nu `https://notchagent.app` so em fim-de-string;
+// o prefixo com barra protege contra subdominios tipo notchagent.app.malicioso.com.
+function ehPermitido(url: string): boolean {
+  return (
+    url === 'https://notchagent.app' ||
+    PERMITIDOS.some((permitido) => url.startsWith(permitido))
+  )
+}
+
 describe('CTAs do site', () => {
   it('nenhum link de saida escapa do tracklink', () => {
-    const externos = [...html.matchAll(/href="(https?:\/\/[^"]+)"/g)]
-      .map((m) => m[1])
-      .filter((u) => !PERMITIDOS.some((p) => u.startsWith(p)))
+    // aspas simples ou duplas, case-insensitive, e scheme-relative (//dominio/...)
+    const externos = [...html.matchAll(/href=(["'])((?:https?:)?\/\/[^"']+)\1/gi)]
+      .map((m) => m[2])
+      .map((u) => (u.startsWith('//') ? `https:${u}` : u))
+      .map((u) => u.toLowerCase())
+      .filter((u) => !ehPermitido(u))
       .filter((u) => !u.startsWith('https://cfgauss.com.br/t/'))
     expect(externos).toEqual([])
   })
@@ -26,6 +38,14 @@ describe('CTAs do site', () => {
   })
 
   it('a secao de captura nao esta oculta', () => {
-    expect(html).not.toMatch(/<section[^>]+id="subscribe"[^>]*\shidden/)
+    const secao = html.match(/<section[^>]*id="subscribe"[^>]*>/)?.[0] ?? ''
+    const escondida =
+      /\shidden\b/.test(secao) ||
+      /style=["'][^"']*display\s*:\s*none[^"']*["']/i.test(secao) ||
+      /class=["'][^"']*hidden[^"']*["']/i.test(secao)
+    expect(
+      escondida,
+      'secao #subscribe oculta por atributo hidden, display:none ou classe contendo "hidden"'
+    ).toBe(false)
   })
 })
