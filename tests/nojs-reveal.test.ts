@@ -2,13 +2,15 @@ import { readFileSync, existsSync } from 'node:fs'
 import { describe, it, expect } from 'vitest'
 
 const PAGE = 'public/index.html'
+const CSS = 'public/styles.css'
 const html = existsSync(PAGE) ? readFileSync(PAGE, 'utf8') : ''
+const css = existsSync(CSS) ? readFileSync(CSS, 'utf8') : ''
 
 // A1: sem JavaScript, .reveal{opacity:0} esconderia 8 seções.
 // O público bloqueia JS — o fallback tem que estar no HTML, não no script.
 describe('REGRESSÃO A1: reveals visíveis sem JS', () => {
   it('a página esconde .reveal por padrão (design preservado)', () => {
-    expect(html).toMatch(/\.reveal\{opacity:0/)
+    expect(css).toMatch(/\.reveal\{opacity:0/)
   })
 
   it('noscript no <head> restaura opacidade e transform dos .reveal', () => {
