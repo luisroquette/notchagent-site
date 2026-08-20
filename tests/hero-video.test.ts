@@ -21,7 +21,7 @@ describe('REGRESSÃO A2: hero video pausável', () => {
   })
 
   it('o script inline liga o botão ao vídeo e respeita prefers-reduced-motion', () => {
-    const script = html.match(/<script>([\s\S]*?)<\/script>/g)?.[0] ?? ''
+    const script = (html.match(/<script>([\s\S]*?)<\/script>/g) ?? []).join('')
     expect(script).toMatch(/getElementById\('hero-video'\)/)
     expect(script).toMatch(/prefers-reduced-motion/)
     expect(script).toMatch(/setHeroPaused\(reduced\)/)
