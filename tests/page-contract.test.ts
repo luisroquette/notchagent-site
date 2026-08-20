@@ -31,4 +31,13 @@ describe('CONTRATO: página de download', () => {
   it('nunca serve o appcast a partir do domínio comprado', () => {
     expect(html).not.toMatch(/notchagent\.app\/appcast/)
   })
+
+  it('o botão de download não depende do formulário', () => {
+    const btn = html.indexOf('data-download')
+    const form = html.indexOf('id="subscribe"')
+    expect(btn, 'botão de download ausente').toBeGreaterThan(-1)
+    if (form > -1) {
+      expect(btn, 'download aparece depois do formulário').toBeLessThan(form)
+    }
+  })
 })
