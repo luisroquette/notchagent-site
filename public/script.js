@@ -1,14 +1,22 @@
-/* Reveal the subscribe form only after the download click. The download itself is never blocked. */
+/* Reveal the subscribe form only after any download click. The download itself is never blocked. */
 (function () {
-  var dl = document.querySelector('[data-download]')
+  var dls = document.querySelectorAll('[data-download]')
   var box = document.getElementById('subscribe')
   var form = document.getElementById('subscribe-form')
   var status = document.getElementById('subscribe-status')
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
-  dl && dl.addEventListener('click', function () {
-    /* O download já foi disparado — o formulário aparece depois, sem travar nada. */
-    window.setTimeout(function () { box.hidden = false }, 700)
-  })
+  for (var i = 0; i < dls.length; i++) {
+    dls[i].addEventListener('click', function () {
+      /* O download já foi disparado — o formulário aparece depois, sem travar nada. */
+      window.setTimeout(function () {
+        box.hidden = false
+        box.scrollIntoView({ block: 'center', behavior: reduced ? 'auto' : 'smooth' })
+        var email = document.getElementById('email')
+        if (email) email.focus()
+      }, 700)
+    })
+  }
 
   form && form.addEventListener('submit', function (e) {
     e.preventDefault()
