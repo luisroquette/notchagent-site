@@ -18,9 +18,12 @@ describe('CONTRATO: página de download', () => {
     expect(html).not.toMatch(/notchagent-personal/)
   })
 
-  it('o botão principal baixa um DMG de um release do GitHub', () => {
-    const dmg = html.match(/href="(https:\/\/github\.com\/luisroquette\/notchagent\/releases\/download\/[^"]+\.dmg)"/)
-    expect(dmg, 'nenhum link de DMG encontrado').not.toBeNull()
+  it('o botão principal baixa um DMG (release do GitHub ou tracklink futuro)', () => {
+    // Aceita os dois destinos: o direto de hoje e o /t/... do tracklink;
+    // o que não pode faltar é o CTA de download do binário DMG.
+    const direto = html.match(/href="(https:\/\/github\.com\/luisroquette\/notchagent\/releases\/download\/[^"]+\.dmg)"/)
+    const tracklink = html.match(/href="(https:\/\/cfgauss\.com\.br\/t\/notchagent-download-dmg)"/)
+    expect(direto ?? tracklink, 'nenhum CTA de download de DMG (direto ou tracklink)').not.toBeNull()
   })
 
   it('declara os requisitos de sistema antes do clique', () => {
