@@ -23,4 +23,12 @@ describe('escolherAsset', () => {
   it('recusa formato fora da lista', () => {
     expect(escolherAsset(ASSETS, 'exe' as never)).toBeNull()
   })
+
+  it('nao devolve o fonte v3.5.1.zip no lugar do binario', () => {
+    const assets = [
+      { name: 'v3.5.1.zip', browser_download_url: 'https://x/fonte' },
+      { name: 'NotchAgent-3.5.1.zip', browser_download_url: 'https://x/zip' },
+    ]
+    expect(escolherAsset(assets, 'zip')).toBe('https://x/zip')
+  })
 })

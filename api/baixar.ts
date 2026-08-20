@@ -3,12 +3,18 @@ export const config = { runtime: 'edge' }
 const FORMATOS = ['dmg', 'zip'] as const
 type Formato = (typeof FORMATOS)[number]
 
+// Pacotes de fonte chegam nomeados `v3.5.1.zip` / `v3.5.1.tar.gz` e nunca
+// são o binário do app — mesmo critério do api/downloads.ts.
+const FONTE = /^v[\d.]+\.(zip|tar\.gz)$/
+
 export function escolherAsset(
   assets: Array<{ name: string; browser_download_url: string }>,
   formato: string,
 ): string | null {
   if (!(FORMATOS as readonly string[]).includes(formato)) return null
-  const achado = assets.find((a) => a.name.toLowerCase().endsWith(`.${formato}`))
+  const achado = assets.find(
+    (a) => !FONTE.test(a.name) && a.name.toLowerCase().endsWith(`.${formato}`),
+  )
   return achado ? achado.browser_download_url : null
 }
 
