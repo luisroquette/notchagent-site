@@ -20,17 +20,29 @@ export function escolherAsset(
 
 const FALLBACK = 'https://github.com/luisroquette/notchagent/releases/latest'
 
+// Cache na CDN: o asset de uma release não muda, e a API anônima do GitHub
+// limita a 60 req/h por IP compartilhado. stale-while-revalidate segura o
+// clique mesmo num pico de lançamento (mesmo padrão do api/downloads.ts).
+const CACHE = 'public, s-maxage=600, stale-while-revalidate=3600'
+
+export function redirectComCache(url: string): Response {
+  const res = Response.redirect(url, 302)
+  res.headers.set('Cache-Control', CACHE)
+  return res
+}
+
 export default async function handler(req: Request): Promise<Response> {
   const formato = new URL(req.url).searchParams.get('f') ?? 'dmg'
   try {
     const res = await fetch('https://api.github.com/repos/luisroquette/notchagent/releases/latest', {
       headers: { Accept: 'application/vnd.github+json', 'User-Agent': 'notchagent-site' },
+      signal: AbortSignal.timeout(8000),
     })
-    if (!res.ok) return Response.redirect(FALLBACK, 302)
+    if (!res.ok) return redirectComCache(FALLBACK)
     const { assets = [] } = await res.json()
     const url = escolherAsset(assets, formato)
-    return Response.redirect(url ?? FALLBACK, 302)
+    return redirectComCache(url ?? FALLBACK)
   } catch {
-    return Response.redirect(FALLBACK, 302)
+    return redirectComCache(FALLBACK)
   }
 }
