@@ -34,7 +34,7 @@ a{color:var(--lilac)}
 .brand{display:flex;align-items:center;gap:10px}
 .brand .dot{width:10px;height:10px;border-radius:2px;background:var(--coral);box-shadow:0 0 12px rgba(255,101,79,.8)}
 .brand strong{font-family:var(--font-display);font-weight:700;font-size:15px;letter-spacing:.02em}
-.brand-word{height:18px;width:auto;display:block}
+.brand-word{height:30px;width:auto;display:block}
 .brand .fw{font-family:var(--font-mono);font-size:10px;color:var(--muted);border:1px solid var(--line);border-radius:4px;padding:2px 6px;letter-spacing:.08em}
 .topbar .buy{display:inline-block;font-family:var(--font-mono);font-size:12px;letter-spacing:.06em;text-decoration:none;color:var(--ink);background:var(--coral);border-radius:6px;padding:8px 14px;font-weight:500}
 .topbar .buy:hover{background:#FF7D6B}
