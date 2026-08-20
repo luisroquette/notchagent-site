@@ -78,7 +78,29 @@
     </div>
   </section>
 
-  <!-- 2 · ONE GLANCE -->
+  <!-- 2 · FILMED -->
+  <section class="filmed" aria-labelledby="filmed-title">
+    <div class="wrap">
+      <h2 id="filmed-title">The problem, filmed.</h2>
+      <p class="lead">Two unedited screen recordings from real Claude sessions — what running out of credits looks like, and what NotchAgent reports while you still have runway.</p>
+      <div class="film-grid">
+        <figure>
+          <video controls preload="none" poster="/img/filmed-credits.jpg" aria-label="Screen recording: a Claude session hits the usage limit and stops mid-task.">
+            <source src="/videos/credits-gone.mp4" type="video/mp4" />
+          </video>
+          <figcaption><strong>Without NotchAgent</strong>The session dies on an out-of-credits error. You find out from the error.</figcaption>
+        </figure>
+        <figure>
+          <video controls preload="none" poster="/img/filmed-notchagent.jpg" aria-label="Screen recording: NotchAgent in the notch reporting percent left, window and reset while Claude runs.">
+            <source src="/videos/notchagent-reports.mp4" type="video/mp4" />
+          </video>
+          <figcaption><strong>With NotchAgent</strong>The same limits, reported live in the notch — percent left, window and reset, before they bite.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 · ONE GLANCE -->
   <section class="glance" aria-labelledby="glance-title">
     <div class="wrap">
       <h2 id="glance-title">One glance. Four questions answered.</h2>
@@ -104,7 +126,7 @@
     </div>
   </section>
 
-  <!-- 3 · DASHBOARD -->
+  <!-- 4 · DASHBOARD -->
   <section class="dashboard" aria-labelledby="dash-title">
     <div class="wrap">
       <h2 id="dash-title">Your keys have a cost. Now they have a dashboard.</h2>
@@ -113,7 +135,7 @@
     </div>
   </section>
 
-  <!-- 4 · TRUST -->
+  <!-- 5 · TRUST -->
   <section class="trust" aria-labelledby="trust-title">
     <div class="wrap">
       <h2 id="trust-title">Your credentials do not become our data.</h2>
@@ -127,7 +149,7 @@
     </div>
   </section>
 
-  <!-- 5 · DATA -->
+  <!-- 6 · DATA -->
   <section class="data" aria-labelledby="data-title">
     <div class="wrap">
       <h2 id="data-title">Data: what's real, what's estimated.</h2>
@@ -181,7 +203,7 @@
     </div>
   </section>
 
-  <!-- 6 · FOOTER -->
+  <!-- 7 · FOOTER -->
   <footer class="foot">
     <div class="wrap">
       <p class="closer">Keep building. <em>Watch the fuel.</em></p>
@@ -255,5 +277,6 @@
     requestAnimationFrame(frame)
   })()
 </script>
+<script src="/script.js" defer></script>
 </body>
 </html>
