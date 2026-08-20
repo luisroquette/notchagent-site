@@ -1,7 +1,7 @@
 {
   "ignoreCommand": "git diff --quiet HEAD^ HEAD -- . ':!README.md' ':!docs/**'",
   "functions": {
-    "api/**/*.ts": { "maxDuration": 10, "memory": 128 }
+    "api/**/*.ts": { "maxDuration": 10 }
   },
   "github": { "silent": true },
   "cleanUrls": true
