@@ -34,16 +34,26 @@ a{color:var(--lilac)}
 .brand{display:flex;align-items:center;gap:10px}
 .brand .dot{width:10px;height:10px;border-radius:2px;background:var(--coral);box-shadow:0 0 12px rgba(255,101,79,.8)}
 .brand strong{font-family:var(--font-display);font-weight:700;font-size:15px;letter-spacing:.02em}
-.brand-word{height:30px;width:auto;display:block}
+.brand-word{height:22px;width:auto;display:block}
 .brand .fw{font-family:var(--font-mono);font-size:10px;color:var(--muted);border:1px solid var(--line);border-radius:4px;padding:2px 6px;letter-spacing:.08em}
 .topbar .buy{display:inline-block;font-family:var(--font-mono);font-size:12px;letter-spacing:.06em;text-decoration:none;color:var(--ink);background:var(--coral);border-radius:6px;padding:8px 14px;font-weight:500}
 .topbar .buy:hover{background:#FF7D6B}
+/* telas estreitas (< 420px): o badge duplica a versão da seção Baixar — some;
+   wordmark e botão encolhem para não sobrar overflow horizontal (iPhone SE) */
+@media (max-width:419px){
+  .topbar .wrap{padding-top:10px;padding-bottom:10px}
+  .brand .fw{display:none}
+  .brand-word{height:16px}
+  .topbar .buy{padding:7px 10px;font-size:11px}
+}
 
 /* ——— hero ——— */
 .hero{position:relative;border-bottom:1px solid var(--line)}
 .hero video{width:100%;height:auto;max-height:78vh;object-fit:cover;background:#000}
 .hero .veil{position:absolute;inset:0;background:linear-gradient(180deg,rgba(26,21,36,.25) 0%,rgba(26,21,36,.55) 55%,var(--ink) 100%)}
 .hero .copy{position:absolute;left:0;right:0;bottom:0;padding:72px 24px 48px;text-align:center}
+.hero-video-toggle{position:absolute;top:14px;right:14px;z-index:5;font-family:var(--font-mono);font-size:12px;line-height:1;color:var(--text);background:rgba(26,21,36,.72);border:1px solid var(--line);border-radius:8px;padding:8px 10px;cursor:pointer;backdrop-filter:blur(4px)}
+.hero-video-toggle:hover{background:rgba(45,36,62,.92)}
 .eyebrow{font-family:var(--font-mono);font-size:12px;letter-spacing:.22em;color:var(--lilac);text-transform:uppercase;margin-bottom:14px}
 .hero h1{font-family:var(--font-display);font-weight:700;font-size:clamp(34px,6vw,64px);line-height:1.05;letter-spacing:-.01em;margin-bottom:16px}
 .hero h1 em{font-style:normal;color:var(--muted)}
