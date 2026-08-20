@@ -26,9 +26,11 @@ const FALLBACK = 'https://github.com/luisroquette/notchagent/releases/latest'
 const CACHE = 'public, s-maxage=600, stale-while-revalidate=3600'
 
 export function redirectComCache(url: string): Response {
-  const res = Response.redirect(url, 302)
-  res.headers.set('Cache-Control', CACHE)
-  return res
+  // Response.redirect() traz headers imutáveis — headers.set() lançaria 500.
+  return new Response(null, {
+    status: 302,
+    headers: { Location: url, 'Cache-Control': CACHE },
+  })
 }
 
 export default async function handler(req: Request): Promise<Response> {
