@@ -1,4 +1,5 @@
-/* Reveal the subscribe form only after any download click. The download itself is never blocked. */
+/* A seção de captura é visível sempre. Ao clicar num download, só rolamos
+   até ela e levamos o foco para o e-mail — sem depender de JS para existir. */
 (function () {
   var dls = document.querySelectorAll('[data-download]')
   var box = document.getElementById('subscribe')
@@ -8,9 +9,8 @@
 
   for (var i = 0; i < dls.length; i++) {
     dls[i].addEventListener('click', function () {
-      /* O download já foi disparado — o formulário aparece depois, sem travar nada. */
+      /* O download já foi disparado — rolamos até o formulário, sem travar nada. */
       window.setTimeout(function () {
-        box.hidden = false
         box.scrollIntoView({ block: 'center', behavior: reduced ? 'auto' : 'smooth' })
         var email = document.getElementById('email')
         if (email) email.focus()
