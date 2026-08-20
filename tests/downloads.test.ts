@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { sumDownloads } from '../api/github-downloads'
+import { sumDownloads } from '../api/downloads'
 
 const fixtures = [
   {
