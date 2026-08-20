@@ -21,17 +21,17 @@
   form && form.addEventListener('submit', function (e) {
     e.preventDefault()
     var email = document.getElementById('email').value
-    status.textContent = 'Sending…'
+    status.textContent = 'Enviando…'
     fetch('/api/subscribe', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: email })
     }).then(function (res) {
       status.textContent = res.ok
-        ? 'Done. You will hear from us only on releases.'
-        : 'That did not work. Try again in a moment.'
+        ? 'Pronto. Avisamos só quando sair versão nova.'
+        : 'Não deu certo. Tente de novo em instantes.'
     }).catch(function () {
-      status.textContent = 'That did not work. Try again in a moment.'
+      status.textContent = 'Não deu certo. Tente de novo em instantes.'
     })
   })
 
