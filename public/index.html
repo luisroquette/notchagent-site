@@ -56,9 +56,10 @@ gtag('config', 'G-VBME8D3TJP');
 
 <main>
   <section class="hero" id="topo">
-    <video autoplay muted loop playsinline preload="metadata" poster="img/hero-poster.jpg" aria-label="Vídeo promocional em inglês: um MacBook Pro à noite, os tokens acabam no meio do trabalho, e o NotchAgent aparece no notch do Mac mostrando o que resta — o gauge segmentado brilhando, o painel reportando ao vivo.">
+    <video id="hero-video" muted loop playsinline preload="metadata" poster="img/hero-poster.jpg" aria-label="Vídeo promocional em inglês: um MacBook Pro à noite, os tokens acabam no meio do trabalho, e o NotchAgent aparece no notch do Mac mostrando o que resta — o gauge segmentado brilhando, o painel reportando ao vivo.">
       <source src="/videos/hero.mp4" type="video/mp4">
     </video>
+    <button type="button" class="hero-video-toggle" id="hero-video-toggle" aria-pressed="false" aria-label="Pausar vídeo">❚❚</button>
     <div class="veil" aria-hidden="true"></div>
     <div class="copy">
       <p class="eyebrow">Monitor de cota para Claude Code e Codex</p>
@@ -302,6 +303,21 @@ gtag('config', 'G-VBME8D3TJP');
     document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
   } else {
     document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  /* Hero (WCAG 2.2.2): movimento >5s precisa de pausa; reduced-motion fica no poster */
+  var heroVideo = document.getElementById('hero-video');
+  var heroToggle = document.getElementById('hero-video-toggle');
+  function setHeroPaused(paused) {
+    if (paused) { heroVideo.pause(); }
+    else { heroVideo.play().catch(function(){}); }
+    heroToggle.setAttribute('aria-pressed', paused ? 'true' : 'false');
+    heroToggle.setAttribute('aria-label', paused ? 'Retomar vídeo' : 'Pausar vídeo');
+    heroToggle.textContent = paused ? '▶' : '❚❚';
+  }
+  if (heroVideo && heroToggle) {
+    setHeroPaused(reduced);
+    heroToggle.addEventListener('click', function(){ setHeroPaused(!heroVideo.paused); });
   }
 })();
 </script>
