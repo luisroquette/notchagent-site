@@ -5,7 +5,10 @@
   var form = document.getElementById('subscribe-form')
   var status = document.getElementById('subscribe-status')
 
-  dl && dl.addEventListener('click', function () { box.hidden = false })
+  dl && dl.addEventListener('click', function () {
+    /* O download já foi disparado — o formulário aparece depois, sem travar nada. */
+    window.setTimeout(function () { box.hidden = false }, 700)
+  })
 
   form && form.addEventListener('submit', function (e) {
     e.preventDefault()
