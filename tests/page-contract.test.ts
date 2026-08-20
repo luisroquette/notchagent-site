@@ -46,4 +46,10 @@ describe('CONTRATO: página de download', () => {
     const el = html.match(/id="dl-count"[^>]*>[^<]*</)?.[0] ?? ''
     expect(el).not.toMatch(/[0-9]/)
   })
+
+  it('declara o app como SoftwareApplication gratuito no schema', () => {
+    expect(html).toMatch(/"@type":\s*"SoftwareApplication"/)
+    expect(html).toMatch(/"price":\s*"0"/)
+    expect(html).toMatch(/"url":\s*"https:\/\/notchagent\.app\/"/)
+  })
 })
