@@ -37,6 +37,31 @@ describe('CTAs do site', () => {
     expect(html).not.toMatch(/releases\/download\/v\d+\.\d+\.\d+/)
   })
 
+  // O guard acima so exige o prefixo /t/ — um slug trocado (download-dmg virando
+  // releases, por exemplo) passaria verde e mandaria o visitante para o lugar
+  // errado sem quebrar teste nenhum. Aqui cada slug usado e conferido contra a
+  // lista dos que existem de fato no banco de tracking links.
+  it('so usa slugs de tracklink que existem', () => {
+    const CONHECIDOS = new Set([
+      'notchagent-download-dmg',
+      'notchagent-download-zip',
+      'notchagent-github',
+      'notchagent-releases',
+      'notchagent-install',
+      'notchagent-changelog',
+    ])
+    const usados = [...html.matchAll(/https:\/\/cfgauss\.com\.br\/t\/([a-z0-9-]+)/gi)]
+      .map((m) => m[1].toLowerCase())
+    expect(usados.length).toBeGreaterThan(0)
+    expect([...new Set(usados)].filter((s) => !CONHECIDOS.has(s))).toEqual([])
+  })
+
+  it('o CTA principal de download aponta para o slug do dmg', () => {
+    const primeiro = html.match(/<a[^>]*data-download[^>]*href="([^"]+)"/i)?.[1]
+      ?? html.match(/<a[^>]*href="([^"]+)"[^>]*data-download/i)?.[1]
+    expect(primeiro).toBe('https://cfgauss.com.br/t/notchagent-download-dmg')
+  })
+
   it('a secao de captura nao esta oculta', () => {
     const secao = html.match(/<section[^>]*id="subscribe"[^>]*>/)?.[0] ?? ''
     const escondida =
