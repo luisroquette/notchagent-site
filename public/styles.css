@@ -1,0 +1,537 @@
+/* NotchAgent — download page
+   Sister of cfgauss.com.br/shop/notchagent-desk.
+   Apple product page: full-bleed sections, 980px content, SF Pro, restrained. */
+
+:root {
+  --max-w: 980px;
+
+  --ink: #14120F;          /* dark warm brown-black */
+  --ink-deep: #1A1524;     /* violaceous ink, CF Gauss brand */
+  --cream: #ECE6DA;        /* light section */
+  --brand: #8B35FF;        /* CF Gauss purple — family link, contained */
+  --brand-hi: #9B4DFF;
+  --coral: #FF4A17;        /* alert — also the meter's critical zone */
+  --amber: #E8B936;        /* attention — the meter's warning zone */
+  --green: #7AC57F;        /* healthy — the app's own green (Theme.swift) */
+
+  --cream-text: #F3EEE3;        /* warm white on ink */
+  --ink-muted: rgba(236, 230, 218, 0.62);
+  --ink-faint: rgba(236, 230, 218, 0.38);
+  --light-muted: rgba(20, 18, 15, 0.64);
+  --hairline-dark: rgba(236, 230, 218, 0.14);
+  --hairline-light: rgba(20, 18, 15, 0.14);
+
+  --font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display",
+    "SF Pro Text", "Helvetica Neue", sans-serif;
+  --font-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, monospace;
+}
+
+* { box-sizing: border-box; }
+
+html { scrollbar-gutter: stable; }
+
+body {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 17px;
+  line-height: 1.55;
+  background: var(--ink);
+  color: var(--cream-text);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img { max-width: 100%; }
+
+a { color: inherit; }
+
+:focus-visible {
+  outline: 3px solid var(--cream-text);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.glance :focus-visible,
+.trust :focus-visible {
+  outline-color: var(--brand);
+}
+
+.btn:focus-visible {
+  outline-color: #fff;
+}
+
+.wrap {
+  max-width: var(--max-w);
+  margin-inline: auto;
+  padding-inline: 24px;
+}
+
+/* ---------- type ---------- */
+
+h1, h2 {
+  font-weight: 700;
+  letter-spacing: -0.022em;
+  margin: 0;
+}
+
+h1 {
+  font-size: clamp(2.6rem, 6vw, 4.25rem);
+  line-height: 1.05;
+}
+
+h1 em {
+  font-style: normal;
+  color: var(--ink-muted);
+}
+
+h2 {
+  font-size: clamp(1.9rem, 3.4vw, 2.9rem);
+  line-height: 1.12;
+  letter-spacing: -0.015em;
+}
+
+.lead {
+  font-size: 19px;
+  line-height: 1.55;
+  margin: 16px auto 0;
+  max-width: 680px;
+}
+
+code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+}
+
+/* ---------- sections ---------- */
+
+.hero   { background: var(--ink); }
+.glance { background: var(--cream); color: var(--ink); }
+.dashboard { background: var(--ink); }
+.trust  { background: var(--cream); color: var(--ink); }
+.data   { background: var(--ink); }
+.foot   { background: var(--ink-deep); }
+
+.glance .wrap,
+.dashboard .wrap,
+.trust .wrap,
+.data .wrap {
+  padding-block: clamp(4rem, 9vw, 7rem);
+  text-align: center;
+}
+
+/* ---------- site bar ---------- */
+
+.sitebar {
+  border-bottom: 1px solid var(--hairline-dark);
+}
+
+.sitebar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+}
+
+.brand {
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  color: var(--cream-text);
+}
+
+.sitebar-nav a {
+  font-size: 14px;
+  color: var(--ink-muted);
+  text-decoration: none;
+}
+
+.sitebar-nav a:hover { color: var(--cream-text); }
+
+/* ---------- hero ---------- */
+
+.hero-inner {
+  padding-top: clamp(3rem, 7vw, 5rem);
+  padding-bottom: clamp(4rem, 9vw, 7rem);
+  text-align: center;
+}
+
+.hero .sub {
+  font-size: clamp(18px, 2.2vw, 21px);
+  line-height: 1.5;
+  color: var(--ink-muted);
+  max-width: 640px;
+  margin: 24px auto 0;
+}
+
+/* --- the dial --- */
+
+.dial { margin: clamp(2.5rem, 5vw, 4rem) 0 0; }
+
+.dial-svg {
+  width: min(400px, 100%);
+  height: auto;
+  display: block;
+  margin-inline: auto;
+}
+
+.dial-track {
+  fill: none;
+  stroke: rgba(236, 230, 218, 0.12);
+  stroke-width: 9;
+}
+
+.dial-zone {
+  fill: none;
+  stroke-width: 9;
+}
+
+.dial-zone-coral { stroke: var(--coral); }
+.dial-zone-amber { stroke: var(--amber); }
+.dial-zone-green { stroke: var(--green); }
+
+.tick-major {
+  stroke: rgba(236, 230, 218, 0.5);
+  stroke-width: 2;
+}
+
+.tick-minor {
+  stroke: rgba(236, 230, 218, 0.25);
+  stroke-width: 1;
+}
+
+.tick-num {
+  fill: rgba(236, 230, 218, 0.45);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  text-anchor: middle;
+}
+
+.needle-line {
+  stroke: var(--cream-text);
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.needle-pivot {
+  fill: var(--ink);
+  stroke: rgba(236, 230, 218, 0.85);
+  stroke-width: 1.5;
+}
+
+.needle-cap {
+  fill: var(--cream-text);
+}
+
+.dial-read {
+  margin: 20px auto 0;
+  max-width: 420px;
+}
+
+.dial-pct {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 44px;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: var(--green);
+  transition: color 0.2s;
+}
+
+.dial-pct.is-amber { color: var(--amber); }
+.dial-pct.is-coral { color: var(--coral); }
+
+.dial-sub {
+  margin: 10px 0 0;
+  font-size: 15px;
+  color: var(--ink-muted);
+}
+
+.dial-sample {
+  margin: 22px 0 0;
+  padding-top: 16px;
+  border-top: 1px solid var(--hairline-dark);
+  font-size: 13px;
+  color: var(--ink-muted);
+}
+
+.dial-keys {
+  margin: 6px 0 0;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ink-faint);
+}
+
+/* --- CTA --- */
+
+.cta { margin-top: clamp(2.5rem, 5vw, 3.5rem); }
+
+.btn {
+  display: inline-block;
+  background: var(--brand);
+  color: #fff;
+  text-decoration: none;
+  font-size: 17px;
+  font-weight: 600;
+  padding: 15px 32px;
+  border-radius: 8px;
+  transition: background 0.15s;
+}
+
+.btn:hover { background: var(--brand-hi); }
+.btn:active { transform: translateY(1px); }
+
+.req {
+  margin: 16px 0 0;
+  font-size: 13px;
+  color: var(--ink-muted);
+}
+
+.alt {
+  margin: 10px 0 0;
+  font-size: 14px;
+  color: var(--ink-muted);
+}
+
+.alt code {
+  color: var(--cream-text);
+  background: rgba(236, 230, 218, 0.08);
+  padding: 2px 7px;
+  border-radius: 5px;
+}
+
+/* --- hero product shots --- */
+
+.shot { margin: clamp(3rem, 7vw, 4.5rem) 0 0; }
+
+.shot img {
+  width: min(520px, 100%);
+  height: auto;
+  border-radius: 8px;
+}
+
+.shot figcaption,
+.bar figcaption {
+  margin: 14px 0 0;
+  font-size: 14px;
+  color: var(--ink-muted);
+}
+
+.bar { margin: 40px 0 0; }
+
+.bar img {
+  width: min(640px, 100%);
+  height: auto;
+}
+
+/* ---------- one glance ---------- */
+
+.glance .lead { color: var(--light-muted); }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 28px;
+  margin-top: 48px;
+  text-align: left;
+}
+
+.grid figure { margin: 0; }
+
+.grid img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 8px;
+}
+
+.grid figcaption {
+  margin-top: 12px;
+  font-size: 14px;
+  color: var(--light-muted);
+}
+
+.grid figcaption strong {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+/* ---------- dashboard ---------- */
+
+.dashboard .lead { color: var(--ink-muted); }
+
+.dash-shot {
+  width: min(860px, 100%);
+  height: auto;
+  border-radius: 8px;
+  margin-top: clamp(2.5rem, 5vw, 3.5rem);
+}
+
+/* ---------- trust ---------- */
+
+.trust .claims {
+  list-style: none;
+  margin: 40px auto 0;
+  padding: 0;
+  max-width: 620px;
+  text-align: left;
+}
+
+.claims li {
+  position: relative;
+  padding-left: 24px;
+  margin-bottom: 18px;
+  font-size: 17px;
+  line-height: 1.55;
+}
+
+.claims li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.6em;
+  width: 7px;
+  height: 7px;
+  background: var(--ink);
+}
+
+.claims li:last-child { margin-bottom: 0; }
+
+.source {
+  display: inline-block;
+  margin-top: 36px;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--brand);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+
+.source:hover { border-bottom-color: var(--brand); }
+
+/* ---------- data table ---------- */
+
+.data .lead { color: var(--ink-muted); }
+
+.table-scroll {
+  overflow-x: auto;
+  margin-top: 48px;
+  border: 1px solid var(--hairline-dark);
+  border-radius: 8px;
+  text-align: left;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+  line-height: 1.5;
+  min-width: 660px;
+}
+
+th {
+  text-align: left;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-faint);
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--hairline-dark);
+}
+
+td {
+  padding: 18px;
+  vertical-align: top;
+  border-bottom: 1px solid var(--hairline-dark);
+  color: var(--ink-muted);
+}
+
+tbody tr:last-child td { border-bottom: 0; }
+
+td strong {
+  display: block;
+  margin-bottom: 3px;
+  font-weight: 600;
+  color: var(--cream-text);
+}
+
+td code { color: var(--cream-text); }
+
+td.admit { color: var(--amber); }
+
+.note {
+  margin: 20px 0 0;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--ink-faint);
+  text-align: left;
+}
+
+.note code { color: var(--ink-muted); }
+
+/* ---------- footer ---------- */
+
+.foot {
+  border-top: 1px solid rgba(236, 230, 218, 0.1);
+}
+
+.foot .wrap {
+  padding-block: 56px 64px;
+  text-align: center;
+}
+
+.closer {
+  margin: 0 0 28px;
+  font-size: clamp(1.4rem, 2.6vw, 1.9rem);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.closer em {
+  font-style: normal;
+  color: var(--ink-muted);
+}
+
+.foot nav {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 28px;
+}
+
+.foot nav a {
+  font-size: 14px;
+  color: var(--ink-muted);
+  text-decoration: none;
+}
+
+.foot nav a:hover { color: var(--cream-text); }
+
+.fine {
+  margin: 28px 0 0;
+  font-size: 12px;
+  color: var(--ink-faint);
+}
+
+/* ---------- responsive ---------- */
+
+@media (max-width: 900px) {
+  .grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 540px) {
+  .grid { grid-template-columns: 1fr; }
+  .dial-svg { width: min(340px, 100%); }
+  .dial-pct { font-size: 38px; }
+}
+
+/* ---------- motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
