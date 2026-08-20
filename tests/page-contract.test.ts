@@ -40,4 +40,10 @@ describe('CONTRATO: página de download', () => {
       expect(btn, 'download aparece depois do formulário').toBeLessThan(form)
     }
   })
+
+  it('o contador de downloads não inventa número no HTML', () => {
+    expect(html, 'elemento dl-count ausente').toMatch(/id="dl-count"/)
+    const el = html.match(/id="dl-count"[^>]*>[^<]*</)?.[0] ?? ''
+    expect(el).not.toMatch(/[0-9]/)
+  })
 })

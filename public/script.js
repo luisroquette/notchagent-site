@@ -26,4 +26,19 @@
       status.textContent = 'That did not work. Try again in a moment.'
     })
   })
+
+  /* Contador real de downloads via GitHub API — nunca um número inventado. */
+  var count = document.getElementById('dl-count')
+  if (count) {
+    fetch('/api/downloads')
+      .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status) })
+      .then(function (d) {
+        if (typeof d.total === 'number') {
+          count.textContent = d.total.toLocaleString('pt-BR')
+        } else {
+          throw new Error('sem total')
+        }
+      })
+      .catch(function () { count.parentElement.hidden = true })
+  }
 })()
