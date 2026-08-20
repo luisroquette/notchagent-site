@@ -1,295 +1,274 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="pt-BR">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>NotchAgent — the fuel gauge for your AI agents</title>
-  <meta name="description" content="See how much of your Claude Code and Codex limit is left, right in your MacBook's notch. Native Swift, local-first, no telemetry." />
-  <link rel="canonical" href="https://notchagent.app/" />
-  <meta property="og:title" content="NotchAgent — the fuel gauge for your AI agents" />
-  <meta property="og:description" content="How much of my limit is left? Answered at a glance, in the notch." />
-  <meta property="og:url" content="https://notchagent.app/" />
-  <meta property="og:image" content="https://notchagent.app/img/notch-compact.png" />
-  <link rel="stylesheet" href="/styles.css" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NotchAgent — O medidor de cota dos seus agentes de IA</title>
+<meta name="description" content="Quanto da sua cota do Claude Code e do Codex ainda resta, direto no notch do seu Mac. Nativo em Swift, local-first, sem telemetria. Grátis e open source.">
+<link rel="canonical" href="https://notchagent.app/">
+<meta property="og:title" content="NotchAgent — O medidor de cota dos seus agentes de IA">
+<meta property="og:description" content="Quanto da minha cota ainda resta? Respondido de relance, no notch do seu Mac.">
+<meta property="og:url" content="https://notchagent.app/">
+<meta property="og:image" content="https://notchagent.app/img/hero-poster.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
 </head>
 <body>
+
+<div class="fuel" aria-hidden="true">
+  <span class="fuel-label">Leitura</span>
+  <span class="segments" id="fuelSegs"></span>
+  <span class="fuel-pct" id="fuelPct">0%</span>
+</div>
+
+<header class="topbar">
+  <div class="wrap">
+    <div class="brand"><span class="dot"></span><strong>NotchAgent</strong><span class="fw">v3.5.1 · macOS</span></div>
+    <a class="buy" data-download href="https://github.com/luisroquette/notchagent/releases/download/v3.5.1/NotchAgent-3.5.1.dmg">Baixar grátis</a>
+  </div>
+</header>
+
 <main>
-
-  <!-- 1 · HERO -->
-  <section class="hero" aria-labelledby="hero-title">
-    <header class="sitebar">
-      <div class="wrap sitebar-inner">
-        <a class="brand" href="/">NotchAgent</a>
-        <nav class="sitebar-nav" aria-label="Site">
-          <a href="https://github.com/luisroquette/notchagent">Source</a>
-        </nav>
+  <section class="hero" id="topo">
+    <video autoplay muted loop playsinline preload="metadata" poster="img/hero-poster.jpg" aria-label="Vídeo promocional: uma sessão do Claude Code fica sem créditos no meio da tarefa, e o NotchAgent no notch do Mac reporta a cota restante em tempo real.">
+      <source src="/videos/hero.mp4" type="video/mp4">
+    </video>
+    <div class="veil" aria-hidden="true"></div>
+    <div class="copy">
+      <p class="eyebrow">Monitor de cota para Claude Code e Codex</p>
+      <h1>O medidor de cota dos seus agentes de IA. <em>Exatamente onde você olha.</em></h1>
+      <p class="sub">Para quem confere a cota pelo terminal: o que resta da janela, em tempo real, no notch do seu Mac.</p>
+      <div class="ctas">
+        <a class="cta primary" data-download href="https://github.com/luisroquette/notchagent/releases/download/v3.5.1/NotchAgent-3.5.1.dmg">Baixar grátis</a>
+        <a class="cta ghost" href="https://github.com/luisroquette/notchagent">Ver no GitHub</a>
       </div>
-    </header>
-
-    <div class="wrap hero-inner">
-      <h1 id="hero-title">Your AI fuel gauge. <em>Exactly where you look.</em></h1>
-      <p class="sub">See how much of your Claude Code and Codex limit is left — without leaving what you were doing.</p>
-
-      <figure class="dial" id="dial" role="img" aria-label="Sample data — 63 percent left in a five-hour Claude Code window. The dial turns amber below 25 percent and coral below 10 percent. NotchAgent shows your own numbers from your own disk.">
-        <svg class="dial-svg" viewBox="0 0 420 250" aria-hidden="true" focusable="false">
-          <path class="dial-track" d="M 60 215 A 150 150 0 0 0 360 215" />
-          <path class="dial-zone dial-zone-coral" d="M 60 215 A 150 150 0 0 0 67.3 168.7" />
-          <path class="dial-zone dial-zone-amber" d="M 67.3 168.7 A 150 150 0 0 0 103.9 108.9" />
-          <path class="dial-zone dial-zone-green" d="M 103.9 108.9 A 150 150 0 0 0 360 215" />
-          <g class="dial-ticks" id="dial-ticks">
-            <line class="tick-major" x1="60" y1="215" x2="78" y2="215" />
-            <line class="tick-major" x1="103.9" y1="108.9" x2="116.7" y2="121.7" />
-            <line class="tick-major" x1="210" y1="65" x2="210" y2="83" />
-            <line class="tick-major" x1="316.1" y1="108.9" x2="303.3" y2="121.7" />
-            <line class="tick-major" x1="360" y1="215" x2="342" y2="215" />
-            <text class="tick-num" x="48" y="246">0</text>
-            <text class="tick-num" x="210" y="44">50</text>
-            <text class="tick-num" x="372" y="246">100</text>
-          </g>
-          <g class="dial-needle" id="dial-needle" transform="rotate(113.4 210 215)">
-            <line class="needle-line" x1="210" y1="215" x2="88" y2="215" />
-            <circle class="needle-pivot" cx="210" cy="215" r="8" />
-            <circle class="needle-cap" cx="210" cy="215" r="3" />
-          </g>
-        </svg>
-        <figcaption class="dial-read">
-          <p class="dial-pct is-green" id="dial-pct">63%</p>
-          <p class="dial-sub" id="dial-sub">left in a 5-hour Claude Code window</p>
-          <p class="dial-sample">Sample data — your own numbers live on your Mac.</p>
-          <p class="dial-keys">green above 25% · amber below 25% · coral below 10%</p>
-        </figcaption>
-      </figure>
-
-      <div class="cta">
-        <a class="btn" data-download href="https://github.com/luisroquette/notchagent/releases/download/v3.5.1/NotchAgent-3.5.1.dmg">Download for Mac</a>
-        <p class="req">macOS 14+ · Apple Silicon · 18 MB · signed and notarized by Apple</p>
-        <p class="alt">Prefer the terminal? <code>brew install --cask luisroquette/tap/notchagent</code></p>
+      <div class="specstrip" aria-label="Especificações rápidas">
+        <span>Swift 6</span><span>Zero Electron</span><span>Local-first</span><span>Grátis</span>
       </div>
-
-      <figure class="shot">
-        <img src="/img/notch-panel.gif" alt="The notch panel at 0%: when a window runs out, the app says so, with the restore state on the screen." />
-        <figcaption>When a window runs out, you see it the moment it happens.</figcaption>
-      </figure>
-
-      <figure class="bar">
-        <img src="/img/notch-compact.png" alt="The compact notch bar: Claude on the left wing, Codex on the right" />
-        <figcaption>At rest, a thin bar in the notch — nothing else.</figcaption>
-      </figure>
     </div>
   </section>
 
-  <!-- 2 · SUBSCRIBE -->
+  <section class="problema reveal">
+    <div class="wrap split">
+      <div>
+        <p class="eyebrow">O problema</p>
+        <h2>Você só descobre que a cota acabou no pior momento.</h2>
+        <p class="lede">O limite chega no meio do build. O relógio oficial não avisa — você descobre pelo erro. O NotchAgent coloca o que resta no seu campo de visão o tempo todo: quando a janela acaba, você vê na hora.</p>
+      </div>
+      <div class="gif-frame"><img src="/img/notch-panel.gif" alt="O painel do notch a 0%: quando a janela esgota, o app diz na tela o que aconteceu e o que resta." loading="lazy"></div>
+    </div>
+  </section>
+
+  <section class="pillars reveal">
+    <div class="wrap">
+      <p class="eyebrow">As quatro páginas do painel</p>
+      <h2>Uma olhada. Quatro perguntas respondidas.</h2>
+      <div class="pillar-grid">
+        <div class="pillar">
+          <p class="page">NOW</p>
+          <h3>O que resta agora</h3>
+          <p>Cards por provedor com layout invariante: a janela de 5 horas sempre acima da semanal. Percentual, reset com contagem regressiva, tokens e custo estimado.</p>
+          <img src="/img/now-cards.png" alt="Página NOW com o percentual restante por provedor" loading="lazy">
+        </div>
+        <div class="pillar">
+          <p class="page">BURN</p>
+          <h3>Vai durar?</h3>
+          <p>Uso real + projeção pontilhada no ritmo atual, com veredito explícito — "acaba às 16:40". Janela esgotada mostra "nada para queimar", nunca um falso "seguro até o reset".</p>
+          <img src="/img/burn-5h-exhausted.png" alt="Página BURN com uma janela esgotada" loading="lazy">
+        </div>
+        <div class="pillar">
+          <p class="page">RHYTHM</p>
+          <h3>Quando você queima</h3>
+          <p>Padrão horário local em 24 barras — hoje ou 7 dias — com a hora atual destacada.</p>
+          <img src="/img/rhythm.png" alt="Página RHYTHM com 24 barras horárias" loading="lazy">
+        </div>
+        <div class="pillar">
+          <p class="page">MODELS</p>
+          <h3>Qual modelo está saudável</h3>
+          <p>Família Claude e modelos OpenAI com probe ao vivo — OK, limitado ou erro — e uso por modelo derivado dos seus próprios transcripts.</p>
+          <img src="/img/claude-models.png" alt="Página MODELS com status de probe ao vivo" loading="lazy">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="como reveal">
+    <div class="wrap">
+      <p class="eyebrow">Como funciona</p>
+      <h2>O motor no seu Mac, o medidor no seu notch.</h2>
+      <div class="steps">
+        <div class="step"><p class="n">1</p><h3>O NotchAgent lê</h3><p>Os arquivos locais do Claude Code e do Codex no seu Mac. Nada sobe para servidor nenhum.</p></div>
+        <div class="step"><p class="n">2</p><h3>Calcula o que resta</h3><p>A mesma janela oficial da cota — incluindo os headers de rate-limit reais da API quando disponíveis.</p></div>
+        <div class="step"><p class="n">3</p><h3>O notch mostra</h3><p>Em repouso, uma barra fina. Passe o mouse e o painel expande com as quatro páginas.</p></div>
+      </div>
+      <div class="video-frame">
+        <img src="/img/notch-compact.png" alt="A barra compacta no notch: Claude na asa esquerda, Codex na direita" loading="lazy">
+      </div>
+    </div>
+  </section>
+
+  <section class="baixar reveal">
+    <div class="wrap">
+      <p class="eyebrow">Baixar</p>
+      <h2>Grátis. Sem conta. Sem telemetria.</h2>
+      <div class="dl-grid">
+        <div class="dl">
+          <p class="page">RECOMENDADO</p>
+          <h3>DMG notarizado</h3>
+          <p>Versão 3.5.1 com ticket notarizado da Apple — o caminho sem Terminal.</p>
+          <a class="cta primary" data-download href="https://github.com/luisroquette/notchagent/releases/download/v3.5.1/NotchAgent-3.5.1.dmg">Baixar DMG</a>
+        </div>
+        <div class="dl">
+          <p class="page">ZIP ASSINADO</p>
+          <h3>Só o app, num ZIP</h3>
+          <p>Descompacte e arraste o NotchAgent para Aplicativos.</p>
+          <a class="cta ghost" data-download href="https://github.com/luisroquette/notchagent/releases/download/v3.5.1/NotchAgent-3.5.1.zip">Baixar ZIP</a>
+        </div>
+        <div class="dl">
+          <p class="page">HOMEBREW</p>
+          <h3>Preferem o terminal?</h3>
+          <p class="mono">brew install --cask luisroquette/tap/notchagent</p>
+          <a class="cta ghost" href="https://github.com/luisroquette/notchagent/blob/master/README.md#install">Instruções</a>
+        </div>
+      </div>
+      <p class="req">macOS 14+ · Apple Silicon · Swift 6 · grátis e open source</p>
+    </div>
+  </section>
+
   <section id="subscribe" hidden>
     <div class="wrap">
-      <h2>Downloading. One thing before you go.</h2>
-      <p class="lead">Want an email when a new version ships? No newsletter, no marketing — release notes only.</p>
+      <h2>Baixando. Uma coisa antes de você ir.</h2>
+      <p class="lede">Quer um e-mail quando sair versão nova? Sem newsletter, sem marketing — só release notes.</p>
       <form id="subscribe-form">
         <label for="email">Email</label>
-        <input id="email" name="email" type="email" required placeholder="you@example.com" autocomplete="email" />
-        <button type="submit">Notify me</button>
+        <input id="email" name="email" type="email" required placeholder="voce@exemplo.com" autocomplete="email" />
+        <button type="submit">Me avise</button>
       </form>
       <p id="subscribe-status" role="status"></p>
     </div>
   </section>
 
-  <!-- 3 · FILMED -->
-  <section class="filmed" aria-labelledby="filmed-title">
+  <section class="priv reveal">
     <div class="wrap">
-      <h2 id="filmed-title">The problem, filmed.</h2>
-      <p class="lead">Two unedited screen recordings from real Claude sessions — what running out of credits looks like, and what NotchAgent reports while you still have runway.</p>
+      <p class="eyebrow">Privacidade</p>
+      <h2>Suas credenciais não viram nossos dados.</h2>
+      <p class="lede">O NotchAgent não tem backend, não tem telemetria e não tem conta. Tudo lê arquivos locais do seu disco.</p>
+      <ul>
+        <li><b>Keychain do macOS.</b> Credenciais de API nunca saem da sua máquina.</li>
+        <li><b>Sem backend.</b> Nenhum servidor recebe seu uso.</li>
+        <li><b>Código aberto.</b> Leia cada linha antes de rodar.</li>
+        <li><b>Probe opcional.</b> O único pedido de rede é um probe de 1 token pra API da Anthropic — desligável em Ajustes.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="filmado reveal">
+    <div class="wrap">
+      <p class="eyebrow">Filmado na prática</p>
+      <h2>O problema, sem edição.</h2>
+      <p class="lede">Duas gravações de tela de sessões reais: o que é ficar sem créditos no meio da tarefa — e o que o NotchAgent reporta enquanto você ainda tem pista.</p>
       <div class="film-grid">
         <figure>
-          <video controls preload="none" poster="/img/filmed-credits.jpg" aria-label="Screen recording: a Claude session hits the usage limit and stops mid-task.">
-            <source src="/videos/credits-gone.mp4" type="video/mp4" />
+          <video controls preload="none" poster="/img/filmed-credits.jpg" aria-label="Gravação de tela: uma sessão do Claude Code atinge o limite de uso e para no meio da tarefa.">
+            <source src="/videos/credits-gone.mp4" type="video/mp4">
           </video>
-          <figcaption><strong>Without NotchAgent</strong>The session dies on an out-of-credits error. You find out from the error.</figcaption>
+          <figcaption><strong>Sem NotchAgent</strong>A sessão morre num erro de créditos. Você descobre pelo erro.</figcaption>
         </figure>
         <figure>
-          <video controls preload="none" poster="/img/filmed-notchagent.jpg" aria-label="Screen recording: NotchAgent in the notch reporting percent left, window and reset while Claude runs.">
-            <source src="/videos/notchagent-reports.mp4" type="video/mp4" />
+          <video controls preload="none" poster="/img/filmed-notchagent.jpg" aria-label="Gravação de tela: o NotchAgent no notch reportando percentual restante, janela e reset enquanto o Claude roda.">
+            <source src="/videos/notchagent-reports.mp4" type="video/mp4">
           </video>
-          <figcaption><strong>With NotchAgent</strong>The same limits, reported live in the notch — percent left, window and reset, before they bite.</figcaption>
+          <figcaption><strong>Com NotchAgent</strong>Os mesmos limites, reportados ao vivo no notch — antes de morderem.</figcaption>
         </figure>
       </div>
     </div>
   </section>
 
-  <!-- 4 · ONE GLANCE -->
-  <section class="glance" aria-labelledby="glance-title">
+  <section class="specs reveal">
     <div class="wrap">
-      <h2 id="glance-title">One glance. Four questions answered.</h2>
-      <p class="lead">Four pages live in the panel. Each one answers the question you are about to ask.</p>
-      <div class="grid">
-        <figure>
-          <img src="/img/now-cards.png" alt="NOW page showing percent left per provider" />
-          <figcaption><strong>NOW</strong> — what is left</figcaption>
-        </figure>
-        <figure>
-          <img src="/img/burn-5h-exhausted.png" alt="BURN page showing an exhausted window" />
-          <figcaption><strong>BURN</strong> — will it last</figcaption>
-        </figure>
-        <figure>
-          <img src="/img/rhythm.png" alt="RHYTHM page with 24 hourly bars" />
-          <figcaption><strong>RHYTHM</strong> — when you burn</figcaption>
-        </figure>
-        <figure>
-          <img src="/img/claude-models.png" alt="MODELS page with live probe status" />
-          <figcaption><strong>MODELS</strong> — which model is healthy</figcaption>
-        </figure>
+      <p class="eyebrow">Ficha técnica</p>
+      <h2>Especificações completas.</h2>
+      <table>
+        <tr><th>Sistema</th><td>macOS 14+ · Apple Silicon · Macs sem notch ganham uma pill flutuante</td></tr>
+        <tr><th>Stack</th><td>Swift 6 · SwiftUI + AppKit · zero Electron</td></tr>
+        <tr><th>Fontes</th><td>Transcripts locais do Claude Code · rollouts do Codex · arquivos de sessão no disco</td></tr>
+        <tr><th>Credenciais</th><td>Keychain do macOS · perfis WebKit isolados por conta</td></tr>
+        <tr><th>Rede</th><td>Nenhuma telemetria · probe opcional de 1 token para a API da Anthropic</td></tr>
+        <tr><th>Distribuição</th><td>DMG notarizado · ZIP assinado · Homebrew</td></tr>
+        <tr><th>Preço</th><td>Grátis · código aberto</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <section class="final reveal">
+    <div class="wrap">
+      <p class="eyebrow">Baixe agora</p>
+      <h2>Pare de descobrir o limite pelo erro.</h2>
+      <p class="price">Grátis · macOS 14+ · Apple Silicon · sem conta</p>
+      <div class="ctas">
+        <a class="cta primary" data-download href="https://github.com/luisroquette/notchagent/releases/download/v3.5.1/NotchAgent-3.5.1.dmg">Baixar grátis</a>
+        <a class="cta ghost" href="https://github.com/luisroquette/notchagent">Explorar o código no GitHub</a>
       </div>
     </div>
   </section>
-
-  <!-- 5 · DASHBOARD -->
-  <section class="dashboard" aria-labelledby="dash-title">
-    <div class="wrap">
-      <h2 id="dash-title">Your keys have a cost. Now they have a dashboard.</h2>
-      <p class="lead">Spend, balance and plan across Anthropic, OpenAI, DeepSeek, OpenRouter, Google, xAI and more — each value labeled with where it came from. An official API reading is never mixed with an estimate.</p>
-      <img class="dash-shot" src="/img/dashboard-session.png" alt="Dashboard showing spend and balance per API account" />
-    </div>
-  </section>
-
-  <!-- 6 · TRUST -->
-  <section class="trust" aria-labelledby="trust-title">
-    <div class="wrap">
-      <h2 id="trust-title">Your credentials do not become our data.</h2>
-      <ul class="claims">
-        <li>API credentials stay in the macOS Keychain — they never leave your machine.</li>
-        <li>No backend, no telemetry, no account. Everything reads local files on disk.</li>
-        <li>Open source — read every line before you run it.</li>
-        <li>The one network call is an optional 1-token probe to Anthropic, and you can turn it off.</li>
-      </ul>
-      <a class="source" href="https://github.com/luisroquette/notchagent">Read the source</a>
-    </div>
-  </section>
-
-  <!-- 7 · DATA -->
-  <section class="data" aria-labelledby="data-title">
-    <div class="wrap">
-      <h2 id="data-title">Data: what's real, what's estimated.</h2>
-      <p class="lead">Every number is labeled with where it came from. An official API reading is never mixed with an estimate.</p>
-      <div class="table-scroll">
-        <table>
-          <thead>
-            <tr>
-              <th scope="col">Source</th>
-              <th scope="col">Real</th>
-              <th scope="col">Estimated</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>
-                <strong>Anthropic probe</strong>
-                optional, ~1 token/min — <code>anthropic-ratelimit-unified-*</code> headers via Claude Code's local OAuth token
-              </td>
-              <td>Official 5h/7d %, resets, allowed/warning/rejected status, limiting window, per-model health</td>
-              <td>—</td>
-            </tr>
-            <tr>
-              <td>
-                <strong>Claude transcripts</strong>
-                <code>~/.claude/projects/**/*.jsonl</code>
-              </td>
-              <td>Tokens (input/output/cache), per-message model, 5h blocks, hourly rhythm</td>
-              <td>Cost (public table in <code>PricingTable.swift</code>)</td>
-            </tr>
-            <tr>
-              <td>
-                <strong>Codex rollouts</strong>
-                <code>~/.codex/sessions/**</code>
-              </td>
-              <td>Exact % per window — weekly-only plans like Spark are detected — resets, plan, tokens</td>
-              <td>Cost</td>
-            </tr>
-            <tr>
-              <td>
-                <strong>Gemini CLI</strong>
-                <code>~/.gemini/tmp/*/logs.json</code>
-              </td>
-              <td>Prompts, sessions, last activity</td>
-              <td class="admit">Tokens don't exist on disk — the app declares that, it never invents them.</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <p class="note">OAuth token: <code>CLAUDE_CODE_OAUTH_TOKEN</code> → <code>~/.claude/.credentials.json</code> → Keychain (macOS consent prompt). Never logged; never leaves the machine except to <code>api.anthropic.com</code>. Can be turned off in Settings.</p>
-    </div>
-  </section>
-
-  <!-- 8 · FOOTER -->
-  <footer class="foot">
-    <div class="wrap">
-      <p class="closer">Keep building. <em>Watch the fuel.</em></p>
-      <nav aria-label="Footer">
-        <a href="https://github.com/luisroquette/notchagent">Source</a>
-        <a href="https://github.com/luisroquette/notchagent/blob/master/CHANGELOG.md">Changelog</a>
-        <a href="https://github.com/luisroquette/notchagent/releases">All releases</a>
-      </nav>
-      <p class="fine">© Luis Roquette · Open source · No affiliation with Anthropic or OpenAI</p>
-    </div>
-  </footer>
-
 </main>
 
+<footer>
+  <div class="wrap">
+    <span>NotchAgent · open source · sem afiliação com Anthropic ou OpenAI</span>
+    <nav aria-label="Rodapé">
+      <a href="https://github.com/luisroquette/notchagent">GitHub</a>
+      <a href="https://github.com/luisroquette/notchagent/blob/master/CHANGELOG.md">Changelog</a>
+      <a href="https://github.com/luisroquette/notchagent/releases">Releases</a>
+    </nav>
+  </div>
+</footer>
+
 <script>
-  /* The hero dial drains a sample window so the thresholds are seen, not told.
-     Reduced motion or no JS: static instrument at rest (63%, green). */
-  (function () {
-    var needle = document.getElementById('dial-needle')
-    var pct = document.getElementById('dial-pct')
-    var dial = document.getElementById('dial')
-    if (!needle || !pct || !dial) return
+(function(){
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    /* minor ticks between the majors — the instrument reads better full */
-    var ticks = document.getElementById('dial-ticks')
-    if (ticks) {
-      var NS = 'http://www.w3.org/2000/svg'
-      for (var p = 5; p < 100; p += 5) {
-        if (p % 25 === 0) continue
-        var th = (180 - p * 1.8) * Math.PI / 180
-        var line = document.createElementNS(NS, 'line')
-        line.setAttribute('class', 'tick-minor')
-        line.setAttribute('x1', (210 + 142 * Math.cos(th)).toFixed(1))
-        line.setAttribute('y1', (215 - 142 * Math.sin(th)).toFixed(1))
-        line.setAttribute('x2', (210 + 150 * Math.cos(th)).toFixed(1))
-        line.setAttribute('y2', (215 - 150 * Math.sin(th)).toFixed(1))
-        ticks.appendChild(line)
-      }
+  /* Fuel gauge: 20 segmentos, progresso de leitura = combustível */
+  var segsWrap = document.getElementById('fuelSegs');
+  var pctEl = document.getElementById('fuelPct');
+  var SEGS = 20;
+  for (var i = 0; i < SEGS; i++) {
+    var s = document.createElement('span');
+    s.className = 'seg';
+    segsWrap.appendChild(s);
+  }
+  var segs = segsWrap.children;
+  function paint(p){
+    p = Math.max(0, Math.min(1, p));
+    var on = Math.round(p * SEGS);
+    for (var i = 0; i < SEGS; i++) {
+      segs[i].className = 'seg' + (i < on ? (p < 0.16 ? ' warn' : ' on') : '');
     }
+    pctEl.textContent = Math.round(p * 100) + '%';
+  }
+  function updateFuel(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    paint(max > 0 ? h.scrollTop / max : 0);
+  }
+  window.addEventListener('scroll', updateFuel, {passive: true});
+  window.addEventListener('resize', updateFuel);
+  updateFuel();
 
-    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    var from = 63
-    var to = 4
-    var dur = 4500
-
-    function zoneClass(p) {
-      return p <= 10 ? 'is-coral' : p <= 25 ? 'is-amber' : 'is-green'
-    }
-
-    function render(p) {
-      var rounded = Math.round(p)
-      needle.setAttribute('transform', 'rotate(' + (p * 1.8) + ' 210 215)')
-      pct.textContent = rounded + '%'
-      pct.classList.remove('is-coral', 'is-amber', 'is-green')
-      pct.classList.add(zoneClass(p))
-      dial.setAttribute('aria-label', 'Sample data — ' + rounded +
-        ' percent left in a five-hour Claude Code window. The dial turns amber below 25 percent ' +
-        'and coral below 10 percent. NotchAgent shows your own numbers from your own disk.')
-    }
-
-    if (reduce) { render(from); return }
-
-    var start = null
-    function frame(ts) {
-      if (start === null) start = ts
-      var t = Math.min((ts - start) / dur, 1)
-      var e = 1 - Math.pow(1 - t, 3)
-      render(from - (from - to) * e)
-      if (t < 1) requestAnimationFrame(frame)
-    }
-    requestAnimationFrame(frame)
-  })()
+  /* Reveals */
+  if (!reduced && 'IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, {threshold: 0.12});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+})();
 </script>
 <script src="/script.js" defer></script>
 </body>
