@@ -167,6 +167,9 @@ describe('handler subscribe -> lead cfgauss', () => {
 describe('timeout do fetch de lead', () => {
   it('tem timeout para o caso de o cfgauss pendurar', () => {
     const src = readFileSync(new URL('../api/subscribe.ts', import.meta.url), 'utf8')
-    expect(src).toMatch(/AbortSignal\.timeout\(5000\)/)
+    // 20s, nao 5s: o orcamento do servidor do outro lado chega a ~18s no pior
+    // caso (POST do card 8s + RPC + PUT do titulo 8s). Com 5s o cliente
+    // desistia antes e registrava lead:false para um lead que fora criado.
+    expect(src).toMatch(/AbortSignal\.timeout\(20000\)/)
   })
 })
