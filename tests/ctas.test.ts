@@ -45,6 +45,7 @@ describe('CTAs do site', () => {
     const CONHECIDOS = new Set([
       'notchagent-download-dmg',
       'notchagent-download-zip',
+      'notchagent-download-windows',
       'notchagent-github',
       'notchagent-releases',
       'notchagent-install',

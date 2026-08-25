@@ -99,7 +99,7 @@ section .lede{color:var(--muted);max-width:640px;font-size:17px}
 
 /* baixar */
 .baixar{background:var(--panel)}
-.dl-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:40px;text-align:left}
+.dl-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:40px;text-align:left}
 .dl{background:var(--ink);border:1px solid var(--line);border-radius:12px;padding:28px;display:flex;flex-direction:column;gap:14px}
 .dl .page{font-family:var(--font-mono);font-size:12px;letter-spacing:.2em;color:var(--lilac);text-transform:uppercase}
 .dl h3{font-family:var(--font-display);font-size:20px;font-weight:700}
