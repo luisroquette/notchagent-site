@@ -1,12 +1,15 @@
 export const config = { runtime: 'edge' }
 
 type Asset = { name?: string; download_count?: number }
-type Release = { assets?: Asset[] }
+type Release = { assets?: Asset[]; prerelease?: boolean }
 
 // Binários de verdade (DMG/ZIP do app). Pacotes de código-fonte chegam
-// nomeados `v3.5.1.zip` / `v3.5.1.tar.gz` e inflariam o número.
+// nomeados `v3.5.1.zip` / `v3.5.1.tar.gz` e inflariam o número. Prereleases
+// (ex: windows-test-build-*) tambem ficam de fora — sao builds de teste de
+// outra plataforma, nao o produto anunciado nesta pagina.
 export function sumDownloads(releases: Release[]): number {
   return releases.reduce((total, release) => {
+    if (release.prerelease) return total
     const binaries = (release.assets ?? []).filter((a) => {
       const name = a.name ?? ''
       return name !== '' && !/^v[\d.]+\.(zip|tar\.gz)$/.test(name)
