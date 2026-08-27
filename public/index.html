@@ -49,7 +49,7 @@ gtag('config', 'G-VBME8D3TJP');
 
 <header class="topbar">
   <div class="wrap">
-    <div class="brand"><img src="/img/wordmark-branco.png" alt="NotchAgent" class="brand-word"><span class="fw">v3.5.4 · macOS</span></div>
+    <div class="brand"><img src="/img/wordmark-branco.png" alt="NotchAgent" class="brand-word"><span class="fw">v3.5.5 · código</span></div>
     <a class="buy" data-download href="https://cfgauss.com.br/t/notchagent-download-dmg">Baixar grátis</a>
   </div>
 </header>
@@ -128,8 +128,8 @@ gtag('config', 'G-VBME8D3TJP');
       <p class="eyebrow">Como funciona</p>
       <h2>O motor no seu Mac, o medidor no seu notch.</h2>
       <div class="steps">
-        <div class="step"><p class="n">1</p><h3>O NotchAgent lê</h3><p>Os arquivos locais do Claude Code e do Codex no seu Mac. Nada sobe para servidor nenhum.</p></div>
-        <div class="step"><p class="n">2</p><h3>Calcula o que resta</h3><p>A mesma janela oficial da cota — incluindo os headers de rate-limit reais da API quando disponíveis.</p></div>
+        <div class="step"><p class="n">1</p><h3>O NotchAgent lê</h3><p>Arquivos locais dos agentes e, para Codex, a interface autenticada oficial da OpenAI.</p></div>
+        <div class="step"><p class="n">2</p><h3>Mostra o que foi reportado</h3><p>Percentual, duração e reset enviados pelo provedor — sem estimar janelas ausentes.</p></div>
         <div class="step"><p class="n">3</p><h3>O notch mostra</h3><p>Em repouso, uma barra fina. Passe o mouse e o painel expande com as quatro páginas.</p></div>
       </div>
       <div class="video-frame">
@@ -190,10 +190,10 @@ gtag('config', 'G-VBME8D3TJP');
     <div class="wrap">
       <p class="eyebrow">Privacidade</p>
       <h2>Suas credenciais não viram nossos dados.</h2>
-      <p class="lede">O NotchAgent não tem backend, não tem telemetria e não tem conta. Tudo lê arquivos locais do seu disco.</p>
+      <p class="lede">O NotchAgent não tem backend próprio, telemetria ou conta. A leitura do Codex usa o app-server oficial já autenticado no seu Mac.</p>
       <ul>
-        <li><b>Keychain do macOS.</b> Credenciais de API nunca saem da sua máquina.</li>
-        <li><b>Sem backend.</b> Nenhum servidor recebe seu uso.</li>
+        <li><b>Credenciais preservadas.</b> O NotchAgent não lê, exporta ou registra seus tokens do Codex.</li>
+        <li><b>Fonte oficial.</b> A cota do Codex vem de <code>account/rateLimits/read</code>, sem chamada paga de modelo.</li>
         <li><b>Código aberto.</b> Leia cada linha antes de rodar.</li>
         <li><b>Probe opcional.</b> O único pedido de rede é um probe de 1 token pra API da Anthropic — desligável em Ajustes.</li>
       </ul>
