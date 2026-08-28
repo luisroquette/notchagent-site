@@ -1,0 +1,11 @@
+#!/bin/sh
+set -eu
+
+while read -r _local_ref _local_sha remote_ref _remote_sha; do
+  if [ "$remote_ref" = "refs/heads/main" ]; then
+    echo "[pre-push] BLOQUEADO: use branch + PR para publicar na main."
+    exit 1
+  fi
+done
+
+npm run preflight

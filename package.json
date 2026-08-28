@@ -2,10 +2,20 @@
   "name": "notchagent-site",
   "private": true,
   "type": "module",
+  "packageManager": "npm@10.9.2",
+  "engines": {
+    "node": "24.x"
+  },
   "scripts": {
-    "test": "vitest run"
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "preflight": "npm run typecheck && npm test",
+    "hooks:install": "sh scripts/install-hooks.sh",
+    "prepare": "npm run hooks:install"
   },
   "devDependencies": {
+    "@types/node": "^24.0.0",
+    "typescript": "^5.9.0",
     "vitest": "^2.1.0"
   }
 }

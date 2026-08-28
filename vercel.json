@@ -3,6 +3,5 @@
   "functions": {
     "api/**/*.ts": { "maxDuration": 10 }
   },
-  "github": { "silent": true },
   "cleanUrls": true
 }
