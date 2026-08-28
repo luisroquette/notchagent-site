@@ -39,8 +39,9 @@ export default async function handler(req: Request): Promise<Response> {
   }
 
   let email: unknown
+  let marketingConsent: unknown
   try {
-    ;({ email } = await req.json())
+    ;({ email, marketingConsent } = await req.json())
   } catch {
     return new Response(JSON.stringify({ ok: false }), { status: 400 })
   }
@@ -74,7 +75,12 @@ export default async function handler(req: Request): Promise<Response> {
       const leadRes = await fetch('https://cfgauss.com.br/api/lead/produto', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: email.toLowerCase().trim(), produto: 'notchagent', segredo }),
+        body: JSON.stringify({
+          email: email.toLowerCase().trim(),
+          produto: 'notchagent',
+          marketingConsent: marketingConsent === true,
+          segredo,
+        }),
         // 20s, nao 5s: a rota do outro lado tem orcamento proprio de ate ~18s
         // (POST do card com 8s + RPC + PUT do titulo com 8s) e ja devolve 502
         // sozinha quando estoura. Com 5s o cliente desistia ANTES do servidor

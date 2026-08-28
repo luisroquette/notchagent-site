@@ -21,14 +21,17 @@
   form && form.addEventListener('submit', function (e) {
     e.preventDefault()
     var email = document.getElementById('email').value
+    var marketingConsent = document.getElementById('marketing-consent').checked
     status.textContent = 'Enviando…'
     fetch('/api/subscribe', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: email })
+      body: JSON.stringify({ email: email, marketingConsent: marketingConsent })
     }).then(function (res) {
       status.textContent = res.ok
-        ? 'Pronto. Avisamos só quando sair versão nova.'
+        ? marketingConsent
+          ? 'Pronto. Avisaremos sobre versões e conteúdos da CF Gauss.'
+          : 'Pronto. Avisamos só quando sair versão nova.'
         : 'Não deu certo. Tente de novo em instantes.'
     }).catch(function () {
       status.textContent = 'Não deu certo. Tente de novo em instantes.'

@@ -44,6 +44,13 @@ describe('CONTRATO: página de download', () => {
     }
   })
 
+  it('separa release notes de consentimento opcional de marketing', () => {
+    expect(html).toContain('Sem newsletter, sem marketing — só release notes.')
+    expect(html).toContain('id="marketing-consent"')
+    expect(html).toContain('type="checkbox"')
+    expect(html).toContain('Posso cancelar a qualquer momento.')
+  })
+
   it('o contador de downloads não inventa número no HTML', () => {
     expect(html, 'elemento dl-count ausente').toMatch(/id="dl-count"/)
     const el = html.match(/id="dl-count"[^>]*>[^<]*</)?.[0] ?? ''

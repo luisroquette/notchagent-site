@@ -113,6 +113,8 @@ section .lede{color:var(--muted);max-width:640px;font-size:17px}
 #subscribe .wrap{max-width:640px}
 #subscribe form{display:flex;gap:10px;justify-content:center;margin-top:28px;flex-wrap:wrap}
 #subscribe label{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+#subscribe .marketing-consent{position:static;width:100%;height:auto;overflow:visible;clip:auto;display:flex;align-items:flex-start;gap:9px;text-align:left;color:var(--muted);font-family:var(--font-mono);font-size:12px;line-height:1.45}
+#subscribe .marketing-consent input{flex:0 0 auto;min-width:0;width:16px;height:16px;margin:1px 0 0;padding:0}
 #subscribe input{flex:1;min-width:260px;max-width:360px;background:var(--ink);border:1px solid var(--line);border-radius:8px;color:var(--text);font-family:var(--font-mono);font-size:14px;padding:12px 14px}
 #subscribe input:focus{outline:2px solid var(--coral);outline-offset:2px}
 #subscribe button{font-family:var(--font-mono);font-size:14px;font-weight:500;color:var(--ink);background:var(--coral);border:0;border-radius:8px;padding:12px 22px;cursor:pointer}

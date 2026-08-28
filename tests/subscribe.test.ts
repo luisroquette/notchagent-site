@@ -2,11 +2,11 @@ import { readFileSync } from 'node:fs'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import handler, { decidirLead, decidirResposta } from '../api/subscribe'
 
-function req(email = 'ana@exemplo.com'): Request {
+function req(email = 'ana@exemplo.com', marketingConsent = false): Request {
   return new Request('https://notchagent.app/api/subscribe', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email }),
+    body: JSON.stringify({ email, marketingConsent }),
   })
 }
 
@@ -90,7 +90,7 @@ describe('handler subscribe -> lead cfgauss', () => {
       json({ ok: true, deduplicado: false, numero: 42 }),
     )
 
-    const res = await handler(req())
+    const res = await handler(req('ana@exemplo.com', true))
     const corpo = await res.json()
 
     expect(res.status).toBe(200)
@@ -99,7 +99,7 @@ describe('handler subscribe -> lead cfgauss', () => {
     expect(chamadas[0].url).toContain('notchagent_subscribers')
     expect(chamadas[1].url).toBe('https://cfgauss.com.br/api/lead/produto')
     const leadBody = JSON.parse(String(chamadas[1].init?.body))
-    expect(leadBody).toEqual({ email: 'ana@exemplo.com', produto: 'notchagent', segredo: 'segredo' })
+    expect(leadBody).toEqual({ email: 'ana@exemplo.com', produto: 'notchagent', marketingConsent: true, segredo: 'segredo' })
   })
 
   it('subscriber ok + lead falhou -> 200 com indicador falso', async () => {
@@ -115,6 +115,20 @@ describe('handler subscribe -> lead cfgauss', () => {
     expect(res.status).toBe(200)
     expect(corpo).toEqual({ ok: true, lead: false })
     expect(chamadas).toHaveLength(2)
+  })
+
+  it('payload legado continua release-only e nunca infere marketing', async () => {
+    ambientesComLead()
+    const chamadas = mockFetch(json({ ok: true }, 201), json({ ok: true }))
+    const legacy = new Request('https://notchagent.app/api/subscribe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: 'ana@exemplo.com' }),
+    })
+
+    await handler(legacy)
+
+    expect(JSON.parse(String(chamadas[1].init?.body))).toMatchObject({ marketingConsent: false })
   })
 
   it('subscriber falhou -> 502, independente do lead', async () => {

@@ -15,4 +15,10 @@ describe('REGRESSÃO A5: todo CTA de download revela o formulário', () => {
     expect(js).toMatch(/scrollIntoView/)
     expect(js).toMatch(/email\.focus\(\)/)
   })
+
+  it('confirma a escolha de comunicação sem mensagem enganosa', () => {
+    expect(js).toContain('marketingConsent')
+    expect(js).toContain('Avisaremos sobre versões e conteúdos da CF Gauss.')
+    expect(js).toContain('Avisamos só quando sair versão nova.')
+  })
 })
